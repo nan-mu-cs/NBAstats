@@ -1,0 +1,615 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block script %}
+    <script src="../../static/js/playerpage.js"></script>
+    <script src="../../static/js/d3.min.js"></script>
+    <style>
+    .menu{
+        background-color: #505A5B;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .menu a:link{
+        color: #ffffff;
+    }
+    .menu a:hover{
+        color:#000000;
+    }
+</style>
+{% endblock %}
+{% block title %}{{ playerinfo.name }}{% endblock %}
+{% block body_attr %}
+    data-spy="scroll" data-target="#navigate"
+{% endblock %}
+{% block body_block %}
+<div class="container">
+  <div class="jumbotron">
+    <div class="row">
+        <div class="col-md-3">
+            <img src="{{ img_url }} " class="img-responsive "/>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-2">
+                    <h1>{{ playerinfo.number }}</h1>
+                </div>
+                <div class="col-sm-1">
+                    <table>
+                        <tr><td height='100' width="5" bgcolor='black'></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <h2>{{ playerinfo.name }}</h2>
+                    </div>
+                    <div class="row">
+                        <strong class="h4">{{ playerinfo.position }} / {{ playerinfo.team_city }} , {{ playerinfo.team_name }}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="row"><p></p></div>
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <small class="h6">Age  </small>
+                    <strong class="h5">{{ playerinfo.age }}</strong><small class="">years </small>
+                    <strong class="h5">{{ playerinfo.day }}</strong><small class="">days</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-1">
+                    <small class="h6">From  </small><strong class="h5">{{ playerinfo.state }}</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <small class="h6">Weight </small><strong class="h5">{{ playerinfo.weight }}</strong><small class=""> kg</small>
+                </div>
+                <div class="col-md-3">
+                    <small class="h6">Height </small><strong class="h5">{{ playerinfo.height }}</strong><small class=""> cm</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <strong class="">Current Season</strong>
+                </div>
+                <div class="col-md-5">
+                    <small>PTS </small><strong>{{ playerinfo.pts }} </strong>
+                    <small>AST </small><strong>{{ playerinfo.ast }} </strong>
+                    <small>REB </small><strong>{{ playerinfo.reb }} </strong>
+                    <small>PIE </small><strong>{{ playerinfo.pie }}%</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <img src="{{ playerinfo.team_img_url }}" class="img-responsive"/>
+        </div>
+    </div>
+  </div>
+  <div id="navigate">
+      <ul class="  nav nav-pills nav-justified" role="tablist">
+          <li role="presentation" class="dropdown playerstat menu">
+            <a class="dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Player Statics <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+            <li class="text-center"><a href="#playerstatregular">Player Statics in Regular Season</a></li>
+            <li class="text-center"><a href="#statrank_regular">League Rankings in Regular Season</a></li>
+            <li class="text-center"><a href="#playerstatpost">Player Statics in Post Season</a></li>
+            <li class="text-center"><a href="#statrank_regular">League Rankings in Post Season</a></li>
+            <li class="text-center"><a href="#playerstatallstar">Player Statics in All Star</a></li>
+            </ul>
+  </li>
+          <li class="menu"><a href="#shootingdiagram">Shooting Diagram</a></li>
+          <li class="menu"><a href="#playernews">Player News</a></li>
+    </ul>
+  </div>
+
+    <div class="row"><h1></h1></div>
+  <div class="row">
+      <div class="col-md-12">
+          <div   id="playerstatregular">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        League Rankings in Regular Season
+                    </h3>
+                </div>
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                        <th>Season</th>
+                        <th>Team</th>
+                        <th>GP</th>
+                        <th>GS</th>
+                        <th>MIN</th>
+                        <th>PTS</th>
+                        <th>FGM/FGA</th>
+                        <th>FG</th>
+                        <th>3P</th>
+                        <th>FT</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        <th>PF</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statrow">
+                    {% if stat.regular %}
+                            {% for ele in stat.regular %}
+                            {% if ele %}
+                                <tr>
+                                    <td>{{ ele.1 }}</td>
+                                    <td>{{ ele.4 }}</td>
+                                    <td>{{ ele.6 }}</td>
+                                    <td>{{ ele.7 }}</td>
+                                    <td>{{ ele.8 }}</td>
+                                    <td>{{ ele.26 }}</td>
+                                    <td>{{ ele.9 }}/{{ ele.10 }}</td>
+                                    <td>{{ ele.11 }}</td>
+                                    <td>{{ ele.14 }}</td>
+                                    <td>{{ ele.17 }}</td>
+                                    <td>{{ ele.20 }}</td>
+                                    <td>{{ ele.21 }}</td>
+                                    <td>{{ ele.22 }}</td>
+                                    <td>{{ ele.23 }}</td>
+                                    <td>{{ ele.24 }}</td>
+                                    <td>{{ ele.25 }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% if stat.regulartotal %}
+                            <tr class="total">
+                                    <td colspan="2" class="text-center">Career</td>
+                                    <td>{{ stat.regulartotal.0.3 }}</td>
+                                    <td>{{ stat.regulartotal.0.4 }}</td>
+                                    <td>{{ stat.regulartotal.0.5 }}</td>
+                                    <td>{{ stat.regulartotal.0.23 }}</td>
+                                    <td>{{ stat.regulartotal.0.6 }}/{{ stat.regulartotal.0.7 }}</td>
+                                    <td>{{ stat.regulartotal.0.8 }}</td>
+                                    <td>{{ stat.regulartotal.0.11 }}</td>
+                                    <td>{{ stat.regulartotal.0.14 }}</td>
+                                    <td>{{ stat.regulartotal.0.17 }}</td>
+                                    <td>{{ stat.regulartotal.0.18 }}</td>
+                                    <td>{{ stat.regulartotal.0.19 }}</td>
+                                    <td>{{ stat.regulartotal.0.20 }}</td>
+                                    <td>{{ stat.regulartotal.0.21 }}</td>
+                                    <td>{{ stat.regulartotal.0.22 }}</td>
+                                </tr>
+                        {% endif %}
+                    {% endif %}
+                    </tbody>
+                </table>
+              <div class="panel-body">
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default up" >Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div   id="statrank_regular">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        League Rankings in Regular Season
+                    </h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th>Season</th>
+                        <th>Team</th>
+                        <th>MIN</th>
+                        <th>PTS</th>
+                        <th>FGM/FGA</th>
+                        <th>FG</th>
+                        <th>3P</th>
+                        <th>FT</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statrow">
+                    {% if stat.rank_regular %}
+                            {% for ele in stat.rank_regular %}
+                            {% if ele %}
+                                <tr>
+                                    {% if ele.1 %}
+                                        <td>{{ ele.1 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.4 %}
+                                        <td>{{ ele.4 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.8 %}
+                                        <td>{{ ele.8 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.25 %}
+                                        <td>{{ ele.25 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.9 and ele.10 %}
+                                        <td>{{ ele.9 }}/{{ ele.10 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.11 %}
+                                        <td>{{ ele.11 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.14 %}
+                                        <td>{{ ele.14 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.17 %}
+                                        <td>{{ ele.17 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.20 %}
+                                        <td>{{ ele.20 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.21 %}
+                                        <td>{{ ele.21 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.22 %}
+                                        <td>{{ ele.22 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.23 %}
+                                        <td>{{ ele.23 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.24 %}
+                                        <td>{{ ele.24 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+              <div class="panel-body">
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default up" >Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div   id="playerstatpost">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Player Statics in Post Season
+                    </h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th>Season</th>
+                        <th>Team</th>
+                        <th>GP</th>
+                        <th>GS</th>
+                        <th>MIN</th>
+                        <th>PTS</th>
+                        <th>FGM/FGA</th>
+                        <th>FG</th>
+                        <th>3P</th>
+                        <th>FT</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        <th>PF</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statrow">
+                    {% if stat.post %}
+                            {% for ele in stat.post %}
+                            {% if ele %}
+                                <tr>
+                                    <td>{{ ele.1 }}</td>
+                                    <td>{{ ele.4 }}</td>
+                                    <td>{{ ele.6 }}</td>
+                                    <td>{{ ele.7 }}</td>
+                                    <td>{{ ele.8 }}</td>
+                                    <td>{{ ele.26 }}</td>
+                                    <td>{{ ele.9 }}/{{ ele.10 }}</td>
+                                    <td>{{ ele.11 }}</td>
+                                    <td>{{ ele.14 }}</td>
+                                    <td>{{ ele.17 }}</td>
+                                    <td>{{ ele.20 }}</td>
+                                    <td>{{ ele.21 }}</td>
+                                    <td>{{ ele.22 }}</td>
+                                    <td>{{ ele.23 }}</td>
+                                    <td>{{ ele.24 }}</td>
+                                    <td>{{ ele.25 }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% if stat.posttotal %}
+                            <tr class="total">
+                                    <td colspan="2" class="text-center">Career</td>
+                                    <td>{{ stat.posttotal.0.3 }}</td>
+                                    <td>{{ stat.posttotal.0.4 }}</td>
+                                    <td>{{ stat.posttotal.0.5 }}</td>
+                                    <td>{{ stat.posttotal.0.23 }}</td>
+                                    <td>{{ stat.posttotal.0.6 }}/{{ stat.posttotal.0.7 }}</td>
+                                    <td>{{ stat.posttotal.0.8 }}</td>
+                                    <td>{{ stat.posttotal.0.11 }}</td>
+                                    <td>{{ stat.posttotal.0.14 }}</td>
+                                    <td>{{ stat.posttotal.0.17 }}</td>
+                                    <td>{{ stat.posttotal.0.18 }}</td>
+                                    <td>{{ stat.posttotal.0.19 }}</td>
+                                    <td>{{ stat.posttotal.0.20 }}</td>
+                                    <td>{{ stat.posttotal.0.21 }}</td>
+                                    <td>{{ stat.posttotal.0.22 }}</td>
+                                </tr>
+                        {% endif %}
+                    {% endif %}
+                    </tbody>
+                </table>
+              <div class="panel-body">
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default up">Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div   id="statrank_post">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        League Rankings in Post Season
+                    </h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th>Season</th>
+                        <th>Team</th>
+                        <th>MIN</th>
+                        <th>PTS</th>
+                        <th>FGM/FGA</th>
+                        <th>FG</th>
+                        <th>3P</th>
+                        <th>FT</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statrow">
+                    {% if stat.rank_post %}
+                            {% for ele in stat.rank_post %}
+                            {% if ele %}
+                                <tr>
+                                    {% if ele.1 %}
+                                        <td>{{ ele.1 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.4 %}
+                                        <td>{{ ele.4 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.8 %}
+                                        <td>{{ ele.8 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.25 %}
+                                        <td>{{ ele.25 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.9 and ele.10 %}
+                                        <td>{{ ele.9 }}/{{ ele.10 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.11 %}
+                                        <td>{{ ele.11 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.14 %}
+                                        <td>{{ ele.14 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.17 %}
+                                        <td>{{ ele.17 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.20 %}
+                                        <td>{{ ele.20 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.21 %}
+                                        <td>{{ ele.21 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.22 %}
+                                        <td>{{ ele.22 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.23 %}
+                                        <td>{{ ele.23 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                    {% if ele.24 %}
+                                        <td>{{ ele.24 }}</td>
+                                    {% else %}
+                                        <td>NR</td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+              <div class="panel-body">
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default up" >Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div   id="playerstatallstar">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Player Statics in All Star
+                    </h3>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th>Season</th>
+                        <th>Team</th>
+                        <th>GP</th>
+                        <th>GS</th>
+                        <th>MIN</th>
+                        <th>PTS</th>
+                        <th>FGM/FGA</th>
+                        <th>FG</th>
+                        <th>3P</th>
+                        <th>FT</th>
+                        <th>REB</th>
+                        <th>AST</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>TOV</th>
+                        <th>PF</th>
+                        </tr>
+                    </thead>
+                    <tbody class="statrow">
+                    {% if stat.allstar %}
+                            {% for ele in stat.allstar %}
+                            {% if ele %}
+                                <tr>
+                                    <td>{{ ele.1 }}</td>
+                                    <td>{{ ele.4 }}</td>
+                                    <td>{{ ele.6 }}</td>
+                                    <td>{{ ele.7 }}</td>
+                                    <td>{{ ele.8 }}</td>
+                                    <td>{{ ele.26 }}</td>
+                                    <td>{{ ele.9 }}/{{ ele.10 }}</td>
+                                    <td>{{ ele.11 }}</td>
+                                    <td>{{ ele.14 }}</td>
+                                    <td>{{ ele.17 }}</td>
+                                    <td>{{ ele.20 }}</td>
+                                    <td>{{ ele.21 }}</td>
+                                    <td>{{ ele.22 }}</td>
+                                    <td>{{ ele.23 }}</td>
+                                    <td>{{ ele.24 }}</td>
+                                    <td>{{ ele.25 }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% if stat.allstartotal %}
+                            <tr class="total">
+                                    <td colspan="2" class="text-center">Career</td>
+                                    <td>{{ stat.allstartotal.0.3 }}</td>
+                                    <td>{{ stat.allstartotal.0.4 }}</td>
+                                    <td>{{ stat.allstartotal.0.5 }}</td>
+                                    <td>{{ stat.allstartotal.0.23 }}</td>
+                                    <td>{{ stat.allstartotal.0.6 }}/{{ stat.allstartotal.0.7 }}</td>
+                                    <td>{{ stat.allstartotal.0.8 }}</td>
+                                    <td>{{ stat.allstartotal.0.11 }}</td>
+                                    <td>{{ stat.allstartotal.0.14 }}</td>
+                                    <td>{{ stat.allstartotal.0.17 }}</td>
+                                    <td>{{ stat.allstartotal.0.18 }}</td>
+                                    <td>{{ stat.allstartotal.0.19 }}</td>
+                                    <td>{{ stat.allstartotal.0.20 }}</td>
+                                    <td>{{ stat.allstartotal.0.21 }}</td>
+                                    <td>{{ stat.allstartotal.0.22 }}</td>
+                                </tr>
+                        {% endif %}
+                    {% endif %}
+                    </tbody>
+                </table>
+              <div class="panel-body">
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default up">Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+          <div  id="shootingdiagram">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Shooting Diagram
+                </h3>
+              </div>
+              <div class="panel-body">
+                  <svg class="chart center-block"></svg>
+                  <button type="button" class="btn" id="test">test</button>
+              </div>
+          </div>
+          </div>
+          <div id="playernews">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                    Player News
+                </h3>
+              </div>
+              <div class="panel-body">
+                  {% if news %}
+                    {% for ele in news %}
+                        <div class="newsele">
+                            <h5>{{ ele.ListItemCaption }}</h5>
+                            <small>{{ ele.lastUpdate }}</small>
+                            <p>{{ ele.ListItemDescription }}</p>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default" id="newsupbtn">Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                    <button type="button" class="btn btn-default" id="newsdownbtn">More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                </div>
+              </div>
+          </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
