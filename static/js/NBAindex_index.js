@@ -1,9 +1,41 @@
 /**
  * Created by andyyang on 15/8/20.
  */
+var playerdata;
+function searchstr(item,str){
+    var flag = item.toLocaleLowerCase().search(str.toLocaleLowerCase());
+    if (flag == -1)
+        return false;
+    else return true;
+}
+function searchdata(data,str){
+    var result = new Array();
+    for(ele in data){
+        var alpset = $.grep(data[ele],function(item){return searchstr(item['display_last_comma_first'],str)});
+        var length = alpset.length;
+        var part = parseInt(length/3 +1);
+        var partset = new Array();
+        var part1 = new Array();
+        for(i = 0;i<part&&i<length;i++)
+            part1[i] = alpset[i];
+        partset['part1'] = part1;
+        var part2 = new Array();
+        for(j = 0,i = part;i<2*part&&i<length;i++,j++)
+            part2[j] = alpset[i];
+        partset['part2'] = part2;
+        var part3 = new Array();
+        for(j = 0,i=2*part;i<length&&i<length;i++,j++)
+            part3[j] = alpset[i];
+        partset['part3'] = part3;
+        result[ele] = partset;
+    }
+    return result;
+}
 function dealwithjson(data)
 {
     for(var ele in data){
+        if(data[ele]['part1'].length == 0)
+            continue;
         $(".playerindex").append(
             '<div class="container '+ele+'"></div>'
         );
@@ -35,7 +67,10 @@ function dealwithjson(data)
 }
 $(document).ready(
     function(){
-        $.getJSON('/NBAindex/index_initialize/',function(data){dealwithjson(data)})
+        $.getJSON('/NBAindex/index_initialize/',function(data){
+            playerdata = data;
+            var resultdata = searchdata(data,'');
+            dealwithjson(resultdata);})
         $('.indexbutton .btn').click(
             function(){
                 var index = $(this).text();
@@ -43,6 +78,7 @@ $(document).ready(
                 $('.playerindex  .' + index).show();
             }
         )
+        /*
         $("#searchplayername").keyup(
             function(){
                 var query = $(this).val();
@@ -52,6 +88,15 @@ $(document).ready(
                     dealwithjson(data);
                         $('.playerindex .container').show();
                 });
+            }
+        )*/
+        $('#searchplayername').keyup(
+            function(){
+                var query = $(this).val();
+                $(".playerindex").empty();
+                var data = searchdata(playerdata,query);
+                dealwithjson(data);
+                $('.playerindex .container').show();
             }
         )
     }

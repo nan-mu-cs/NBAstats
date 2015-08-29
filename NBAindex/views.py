@@ -38,12 +38,13 @@ def index_initialize(requset):
         length = len(resultlist);
         if(length == 0):
             continue
+            '''
         part = length/3 +1
         a = {}
         a['part1'] = resultlist[0:part]
         a['part2'] = resultlist[part:2*part]
-        a['part3'] = resultlist[2*part:length]
-        bychar[alp] = a
+        a['part3'] = resultlist[2*part:length]'''
+        bychar[alp] = resultlist
     return HttpResponse(json.dumps(bychar,sort_keys=True),content_type="application/json")
 
 def index_search(request):
