@@ -1,6 +1,9 @@
 /**
  * Created by andyyang on 15/8/21.
  */
+var menudata;
+var shootdata;
+var chart;
 function upandown(id){
     var num = $('#'+id+' .statrow').children().length;
     num--;
@@ -76,6 +79,71 @@ function drawcourt(chart) {
     chart.append('path').attr('d', arc(39, 42, pi / 2, 3 * pi / 2)).attr('transform', 'translate(250,52.5)');
 
 }
+
+function menuChange(targetset){
+    var year = new Set();
+    var month = new Set();
+    var day = new Set();
+    var match = new Array();
+    var data = menudata;
+    if(targetset['year']!='')
+        data = $.grep(data,function(item){return item['year'] == targetset['year']});
+    if(targetset['month']!='')
+        data = $.grep(data,function(item){return item['month'] == targetset['month']});
+    if(targetset['day']!='')
+        data = $.grep(data,function(item){return item['day'] == targetset['day']});
+    if(targetset['match']!='')
+        data = $.grep(data,function(item){return item['game_id'] == targetset['match']});
+    for(i = 0;i<data.length;i++){
+        year.add(data[i]['year']);
+        month.add(data[i]['month']);
+        day.add(data[i]['day']);
+        match[i] = {'gameid':data[i]['game_id'],'match':data[i]['match']}
+    }
+    $('.shootselect .year').children().hide();
+    $('.shootselect .month').children().hide();
+    $('.shootselect .day').children().hide();
+    $('.shootselect .match').children().hide();
+    $('.shootselect .all').show();
+    for( item of year)
+    {
+        $('.shootselect .year .' + item).show();
+    }
+    for( item of month){
+        $('.shootselect .month .'+item).show();
+    }
+    for( item of day){
+        $('.shootselect .day .'+item).show();
+    }
+    for( item of match){
+        $('.shootselect .match .'+item['gameid']).show();
+    }
+}
+function drawpoints(chart,shootdata){
+     chart.selectAll("circle").data(shootdata).enter().append("circle")
+            .attr('class','point')
+            .attr("cx",function(d){return d['LOC_X']})
+            .attr("cy",function(d){return d['LOC_Y']})
+            .attr('fill',function(d){
+                    if(d['EVENT_TYPE'] == "Made Shot") return 'red';
+                    else return 'blue';
+                })
+            .attr("r",3).attr('transform','translate(250,52.5)');
+}
+function Redrawshootingplot(targetset){
+    var data = shootdata;
+    if(targetset['year']!='')
+        data = $.grep(data,function(item){return item['year'] == targetset['year']});
+    if(targetset['month']!='')
+        data = $.grep(data,function(item){return item['month'] == targetset['month']});
+    if(targetset['day']!='')
+        data = $.grep(data,function(item){return item['day'] == targetset['day']});
+    if(targetset['match']!='')
+        data = $.grep(data,function(item){return item['GAME_ID'] == targetset['match']});
+    $('.point').remove();
+    drawpoints(chart,data);
+}
+//$.grep(data,function(item){return item.year == '2014'})
 $(document).ready(
     function(){
         var url = window.location.href;
@@ -130,42 +198,72 @@ $(document).ready(
         $('#statrank_post .up').click(function(){uptriggered('statrank_post')});
         $('#statrank_post .down').click(function(){downtriggered('statrank_post')});
 
-
-        shotChartUrl = 'http://stats.nba.com/stats/shotchartdetail?Period=0'+
-                '&VsConference=&LeagueID=00&LastNGames=0&TeamID=0&'+
-                'Position=&Location=&Outcome=&ContextMeasure=FGA&'+
-                'DateFrom=&StartPeriod=&DateTo=&OpponentTeamID=0'+
-                '&ContextFilter=&RangeType=&Season=2014-15&AheadBehind='+
-                '&PlayerID=2594&EndRange=&VsDivision=&PointDiff=&RookieYear'+
-                '=&GameSegment=&Month=0&ClutchTime=&StartRange=&EndPeriod='+
-                '&SeasonType=Regular+Season&SeasonSegment=&GameID=';
-        //var dataset = [
-          //  [0, 0], [600, 600], [250, 50], [100, 33], [330, 95],
-            //[410, 12], [475, 44], [25, 67], [85, 21], [220, 88]
-            //];
         var dataset = [[0,0]]
         var width = 600;
         var height = 600;
-        var chart = d3.select(".chart").attr("width",width).attr("height",height);
+        chart = d3.select(".chart").attr("width",width).attr("height",height);
         drawcourt(chart);
-        $.getJSON('/NBAindex/shootingdiagram',{playerid:playerid},function(d){
-            var data = d;
-            var dd = d3.json(data);
-            chart.selectAll("circle").data(data).enter().append("circle")
-            .attr("cx",function(d){return d[17]})
-            .attr("cy",function(d){return d[18]})
-            .attr('fill',function(d){
-                    if(d[10] == "Made Shot") return 'red';
-                    else return 'blue';
-                })
-            .attr("r",3).attr('transform','translate(250,52.5)');
+        $.getJSON('/NBAindex/playergamelog',{playerid:playerid},function(data){
+            menudata = data;
+            var year = new Set();
+            var month = new Set();
+            var day = new Set();
+            var match = new Array();
+            for(i = 0;i<data.length;i++){
+                year.add(data[i]['year']);
+                month.add(data[i]['month']);
+                day.add(data[i]['day']);
+                match[i] = {'gameid':data[i]['game_id'],'match':data[i]['match']}
+            }
+            for( item of year){
+                $('.shootselect .year').append(
+                    '<option value="'+item+'" class="'+item+'">'+item+'</option>')
+            }
+            for( item of month){
+                $('.shootselect .month').append(
+                    '<option value="'+item+'" class="'+item+'">'+item+'</option>')
+            }
+            for( item of day){
+                $('.shootselect .day').append(
+                    '<option value="'+item+'" class="'+item+'">'+item+'</option>')
+            }
+            for( item of match){
+                $('.shootselect .match').append(
+                    '<option value="'+item['gameid']+'" class="'+item['gameid']+'">'+item['match']+'</option>')
+            }
         })
-        var y = d3.scale.linear().range([height,0]).domain([-100,500]);
-        var x = d3.scale.linear().range([width,0]).domain([-300,300]);
-        chart.selectAll("circle").data(dataset).enter().append("circle")
-            .attr("cx",function(d){return d[0]})
-            .attr("cy",function(d){return d[1]}).attr("r",5);
-
+        $('.shootselect').change(function(){
+            var targetValue={
+                'year':$('.year').val(),
+                'month':$('.month').val(),
+                'day':$('.day').val(),
+                'match':$('.match').val()
+            };
+            menuChange(targetValue);
+        });
+        $('.selectbtn').click(
+            function(){
+                var targetValue={
+                'year':$('.year').val(),
+                'month':$('.month').val(),
+                'day':$('.day').val(),
+                'match':$('.match').val()
+            };
+             Redrawshootingplot(targetValue);
+            }
+        );
+        $('.resetbtn').click(
+            function(){
+                $('.year').val('');
+                $('.month').val('');
+                $('.day').val('');
+                $('.match').val('');
+            }
+        )
+        $.getJSON('/NBAindex/shootingdiagram',{playerid:playerid},function(d){
+            shootdata = d;
+            drawpoints(chart,shootdata);
+        })
     }
 );
 

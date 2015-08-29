@@ -579,8 +579,46 @@
                 </h3>
               </div>
               <div class="panel-body">
-                  <svg class="chart center-block"></svg>
-                  <button type="button" class="btn" id="test">test</button>
+                  <div class="row">
+                      <svg class="chart center-block"></svg>
+                      <div class="pull-right">
+                      <p >red points for "made shot",blue points for "miss shot"</p>
+                  </div>
+                  </div>
+                  <div class="row pull-right">
+                      <form class="shootselect form-inline">
+                          <div class="form-group">
+                              <label>Year</label>
+                              <select name="year" class="year form-control">
+                              <option value=""  selected class="all">All</option>
+                          </select>
+                          </div>
+                          <div class="form-group">
+                              <label>Month</label>
+                              <select name="month" class="form-control month">
+                              <option value=""  selected class="all">All</option>
+                          </select>
+                          </div>
+                          <div class="form-group">
+                              <label>Day</label>
+                              <select name="day" class="form-control day">
+                              <option value="" selected class="all">All</option>
+                          </select>
+                          </div>
+                          <div class="form-group">
+                              <label>Against</label>
+                              <select name="game" class="form-control match">
+                              <option value=""  selected class="all">All</option>
+                          </select>
+                          </div>
+                          <div class="form-group">
+                              <button type="button" class="btn btn-default selectbtn">Run</button>
+                          </div>
+                          <div class="form-group">
+                              <button type="button" class="btn btn-default resetbtn">Reset</button>
+                          </div>
+                      </form>
+                  </div>
               </div>
           </div>
           </div>
