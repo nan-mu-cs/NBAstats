@@ -65,8 +65,9 @@
    </div>
    <div class="collapse navbar-collapse" id="example-navbar-collapse">
       <ul class="nav navbar-nav">
-          <li ><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'aboutme' %}">About</a></li>
+          <li class="{% block navplayer %}{% endblock %}"><a href="{% url 'index' %}">Player</a></li>
+          <li class="{% block navabout%}{% endblock %}"><a href="{% url 'aboutme' %}">About</a></li>
+          <li class="{% block navgame %}{% endblock %}"><a href="">Score</a></li>
       </ul>
        <ul class="nav navbar-nav navbar-right">
            {% if user.is_authenticated %}

@@ -1,0 +1,34 @@
+import goldsberry
+import pandas as pd
+import sqlite3
+def getteamprofile(filter_season):
+    gameids = goldsberry.GameIDs()
+    gameids = pd.DataFrame(gameids)
+    teamids = gameids['HOME_TEAM_ID'].ix[gameids['SEASON']
+            ==filter_season].drop_duplicates()
+    teamids_full = pd.DataFrame() # Create empty Data Frame
+    for i in teamids.values:
+            team = goldsberry.team.team_info(i)
+            teamids_full = pd.concat([teamids_full,
+                    pd.DataFrame(team.info())])
+    return teamids_full
+
+def InsertTeamProfile():
+    conn = sqlite3.connect('db.sqlite3')
+    cur = conn.cursor()
+    para = 'insert into teamprofile values(?,?,?,?,?,\
+                                           ?,?,?,?,?)'
+    team = getteamprofile('2014')
+    for i in range(0,len(team)):
+        fillset = [team['TEAM_ID'][i],team['TEAM_NAME'][i],team['MAX_YEAR'][i],
+                    team['MIN_YEAR'][i],team['PCT'][i],team['TEAM_ABBREVIATION'][i],
+                    team['TEAM_CITY'][i],team['TEAM_CODE'][i],team['TEAM_CONFERENCE'][i],
+                    team['TEAM_DIVISION'][i]]
+        cur.execute(para,fillset)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+if __name__=='__main__':
+    InsertTeamProfile()
+

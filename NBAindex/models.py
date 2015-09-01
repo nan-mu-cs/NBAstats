@@ -43,6 +43,35 @@ class playerdata(player):
     class Meta:
         db_table = 'playerdata'
 
+class gameid(models.Model):
+    gameid = models.CharField(max_length=12,primary_key=True)
+    date = models.CharField(max_length=9)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    day = models.IntegerField()
+    hometeamid = models.CharField(max_length=12)
+    visitorteamid = models.CharField(max_length=12)
+    def __unicode__(self):
+        return self.gameid
+    class Meta:
+        db_table = 'gameid'
+
+class teamprofile(models.Model):
+    teamid = models.CharField(max_length=12,primary_key=True)
+    name = models.CharField(max_length=20)
+    maxyear = models.IntegerField()
+    minyear = models.IntegerField()
+    pct = models.FloatField()
+    teamabbrev = models.CharField(max_length=10)
+    city = models.CharField(max_length=30)
+    teamcode = models.CharField(max_length=10)
+    conference = models.CharField(max_length=10)
+    division = models.CharField(max_length=20)
+    def __unicode__(self):
+        return self.name
+    class Meta:
+        db_table = 'teamprofile'
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     email = models.EmailField(blank=True)

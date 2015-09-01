@@ -1,0 +1,32 @@
+import re
+import goldsberry
+import pandas as pd
+import sqlite3
+
+def getgameid():
+    gameids = goldsberry.GameIDs()
+    gameids = pd.DataFrame(gameids)
+    return gameids
+
+def InsertGameIDs():
+    conn = sqlite3.connect('db.sqlite3')
+    cur = conn.cursor()
+    gameids = getgameid()
+    para = 'insert into gameid values(?,?,?,?,?,?,?)'
+    pattern1 = re.compile(r'\d+')
+    pattern2 = re.compile(r'(\d+)-(\d+)-(\d+)')
+    for i in range(0,len(gameids)):
+        date = re.findall(pattern1,gameids['GAMECODE'][i])[0]
+        times = re.findall(pattern2,gameids['GAME_DATE_EST'][i])[0]
+        year = times[0]
+        month = times[1]
+        day = times[2]
+        fillset = [date,year,month,day,gameids['HOME_TEAM_ID'][i],
+                gameids['VISITOR_TEAM_ID'][i],gameids['GAME_ID'][i]]
+        cur.execute(para,fillset)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+if __name__ == '__main__':
+    InsertGameIDs()
