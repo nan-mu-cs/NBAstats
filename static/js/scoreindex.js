@@ -5,7 +5,7 @@ var gamedata;
 function filldata(data){
     $('.gamecontainer').empty()
     if(data.length == 0)
-        $('.gamecontainer').append('<p class="text-center">NO GAMES</p>');
+        $('.gamecontainer').append('<h1 class="text-center">NO GAMES</h1>');
     else {
         for(i = 0;i<data.length;i++)
         {
@@ -37,6 +37,10 @@ function filldata(data){
             for(j = 0;j<data[i]['period'];j++)
                 $('.'+data[i]['game_id'] + ' table tbody .visitor').append('<td>'+data[i]['visitorqtr'][j]+'</td>');
             $('.'+data[i]['game_id'] + ' table tbody .visitor').append('<td>'+data[i]['visitorpts']+'</td>');
+            $('.'+data[i]['game_id']).append('<a href="">' +
+                '<button class="btn btn-default pull-right">View Details</button>' +
+                '</a>');
+            $('.gamecontainer').append('<br/><br/>');
         }
     }
 }
@@ -60,6 +64,7 @@ $(document).ready(
 		forceParse: 0,
         keyboardNavigation: true,
     });
+        $('.loading').hide();
         $.get('/NBAindex/scoredatesearch',{date:datestr},
                 function(data){
                     gamedata = data;
@@ -68,9 +73,11 @@ $(document).ready(
         $('#dtp_input').change(
             function(){
                 $('.gamecontainer').empty()
+                $('.loading').show();
                 $.get('/NBAindex/scoredatesearch',{date:$(this).val()},
                 function(data){
                     gamedata = data;
+                    $('.loading').hide();
                     filldata(data);
                 });
             }
