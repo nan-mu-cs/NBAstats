@@ -37,7 +37,7 @@ function filldata(data){
             for(j = 0;j<data[i]['period'];j++)
                 $('.'+data[i]['game_id'] + ' table tbody .visitor').append('<td>'+data[i]['visitorqtr'][j]+'</td>');
             $('.'+data[i]['game_id'] + ' table tbody .visitor').append('<td>'+data[i]['visitorpts']+'</td>');
-            $('.'+data[i]['game_id']).append('<a href="">' +
+            $('.'+data[i]['game_id']).append('<a href="/scorepage/'+data[i]['game_id']+'">' +
                 '<button class="btn btn-default pull-right">View Details</button>' +
                 '</a>');
             $('.gamecontainer').append('<br/><br/>');

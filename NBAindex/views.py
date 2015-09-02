@@ -231,33 +231,68 @@ def score_index(request):
 
 def score_datesearch(request):
     datestr = request.GET['date']
-    print datestr
     pattern = re.compile(r'(\d+)-(\d+)-(\d+)')
     date = re.findall(pattern,datestr)[0]
     year = date[0]
     month = date[1]
     day = date[2]
-    url = 'http://stats.nba.com/stats/boxscoresummaryv2?GameID='
     resultset = gameid.objects.filter(year=year,month=month,day=day).values("gameid")
     dateset = []
     for id in resultset:
-        gameurl = url + id['gameid']
+        item = gameinfo(id['gameid'])
+        dateset.append(item)
+    return HttpResponse(json.dumps(dateset),content_type="application/json")
+
+def scorepage_index(request,game_id):
+    game_info = gameinfo(game_id)
+    url = 'http://stats.nba.com/stats/boxscoretraditionalv2?EndPeriod=10&EndRange=28800&'\
+            'GameID=%s&RangeType=0&StartPeriod=1&StartRange=0'%game_id
+    response = requests.get(url)
+    homeplayerstat = []
+    visitorplayerstat = []
+    playerstat = response.json()['resultSets'][0]['rowSet']
+    hometeamstat = response.json()['resultSets'][1]['rowSet'][1]
+    visitorteamstat = response.json()['resultSets'][1]['rowSet'][0]
+    for item in playerstat:
+        if item[1] == game_info['hometeamid']:
+            homeplayerstat.append(item)
+        else:
+            visitorplayerstat.append(item)
+    context = {
+        'homeplayerstat':homeplayerstat,
+        'hometeamstat':hometeamstat,
+        'visitorplayerstat':visitorplayerstat,
+        'visitorteamstat':visitorteamstat,
+        'gameinfo':game_info,
+        'hometeamimg':'http://stats.nba.com/media/img/teams/logos/%s_logo.svg'%game_info['hometeamname'],
+        'visitorteamimg':'http://stats.nba.com/media/img/teams/logos/%s_logo.svg'%game_info['visitorteamname']
+    }
+    print context
+    return render(request,'NBAindex/scorepage.html',context)
+def gameinfo(id):
+    url = 'http://stats.nba.com/stats/boxscoresummaryv2?GameID='
+    try:
+        gameurl = url + id
         response = requests.get(gameurl)
         summary = response.json()['resultSets'][0]['rowSet'][0]
+        date = summary[0]
+        pattern = re.compile(r'([-0-9]+)')
+        date = re.findall(pattern,date)[0]
         game_id = summary[2]
         status = summary[4]
         hometeamid = summary[6]
         visitorteamid = summary[7]
         period = summary[9]
         otherstas = response.json()['resultSets'][1]['rowSet']
-        hometeamname = otherstas[0][2]
-        visitorteamname = otherstas[1][2]
+        hometeamname = teamprofile.objects.filter(teamid = hometeamid).values("teamabbrev")[0]['teamabbrev']
+        visitorteamname = teamprofile.objects.filter(teamid = visitorteamid).values("teamabbrev")[0]['teamabbrev']
         linescore = response.json()['resultSets'][5]['rowSet']
         homeqtr = linescore[0][8:22]
         visitorqtr = linescore[1][8:22]
         homepts = linescore[0][22]
-        visitorpts = linescore[0][22]
+        visitorpts = linescore[1][22]
         item = {
+            'date':date,
             'game_id':game_id,
             'status':status,
             'hometeamid':hometeamid,
@@ -270,6 +305,10 @@ def score_datesearch(request):
             'homepts':homepts,
             'visitorpts':visitorpts,
         }
-        dateset.append(item)
-    return HttpResponse(json.dumps(dateset),content_type="application/json")
-
+    except:
+        item = {
+            'game_id':'','status':'','hometeamid':'','visitorteamid':'',
+            'period':'','hometeamname':'','visitorteamname':'',
+            'homeqtr':'','visitorqtr':'','homepts':'','visitorpts':'',
+        }
+    return item

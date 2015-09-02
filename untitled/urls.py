@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'NBAindex/logout',views.user_logout,name="logout"),
     url(r'^score/',views.score_index,name="score"),
     url(r'NBAindex/scoredatesearch',views.score_datesearch,name="score_datesearch"),
+    url(r'scorepage/(?P<game_id>\d+)/$',views.scorepage_index,name="scorepage_index"),
 ]
 
 

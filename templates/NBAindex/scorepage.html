@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block script %}
+{% endblock %}
+{% block title %}{{ gameinfo.hometeamname }} - {{ gameinfo.visitorteamname }}{% endblock %}
+{% block body_block %}
+<div class="container">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-5 "><p class="h4 text-center">{{ gameinfo.date }}</p></div>
+            <div class="col-md-2"><p class="h4 text-center">{{ gameinfo.status }}</p></div>
+            <div class="col-md-5"><p class="h4 text-center">{{ hometeamstat.4 }}</p></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h3 class="text-right">{{ hometeamstat.2 }}&nbsp;&nbsp;&nbsp;{{ gameinfo.homepts }}</h3>
+            </div>
+            <div class="col-md-2 "><img src="{{ hometeamimg }}" class="img-responsive"></div>
+            <div class="col-md-2"><h2 class="text-center">VS</h2></div>
+            <div class="col-md-2"><img src="{{ visitorteamimg }}" class="img-responsive"></div>
+            <div class="col-md-3 "><h3 class="text-left">{{ gameinfo.visitorpts }}&nbsp;&nbsp;&nbsp;{{ visitorteamstat.2 }}</h3></div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-2">
+                <table class="table">
+                    <thead>
+                        <th>Team</th>
+                        {% for item in gameinfo.homeqtr %}
+                            {% if forloop.counter <= gameinfo.period %}
+                                {% if forloop.counter > 4 %}
+                                    <th>OT{{ forloop.counter|add:'-4' }}</th>
+                                {% else %}
+                                    <th>{{ forloop.counter }}</th>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <th>Final</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ gameinfo.hometeamname }}</td>
+                            {% for item in gameinfo.homeqtr %}
+                                {% if forloop.counter <= gameinfo.period %}
+                                    <td>{{ item }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ gameinfo.homepts }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ gameinfo.visitorteamname }}</td>
+                            {% for item in gameinfo.visitorqtr %}
+                                {% if forloop.counter <= gameinfo.period %}
+                                    <td>{{ item }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>{{ gameinfo.visitorpts }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
