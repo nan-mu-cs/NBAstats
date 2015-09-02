@@ -61,5 +61,168 @@
         </div>
     </div>
 </div>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="homestat">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ hometeamstat.4 }} {{ hometeamstat.2 }} Player Statics
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>PLAYER</th>
+                            <th>MIN</th>
+                            <th>FGM/FGA</th>
+                            <th>FG_PCT</th>
+                            <th>FG3M/FG3A</th>
+                            <th>FG3_PCT</th>
+                            <th>FTM/FTA</th>
+                            <th>FT_PCT</th>
+                            <th>OREB</th>
+                            <th>DREB</th>
+                            <th>REB</th>
+                            <th>AST</th>
+                            <th>STL</th>
+                            <th>BLK</th>
+                            <th>PF</th>
+                            <th>PTS</th>
+                            <th>+/-</th>
+                        </thead>
+                        <tbody>
+                            {% for player in homeplayerstat %}
+                                <tr>
+                                    {% if player.7 == '' %}
+                                        <td>{{ player.5 }}</td>
+                                        <td>{{ player.8 }}</td>
+                                        <td>{{ player.9 }}/{{ player.10 }}</td>
+                                        <td>{{ player.11 }}</td>
+                                        <td>{{ player.12 }}/{{ player.13 }}</td>
+                                        <td>{{ player.14 }}</td>
+                                        <td>{{ player.15 }}/{{ player.16 }}</td>
+                                        <td>{{ player.17 }}</td>
+                                        <td>{{ player.18 }}</td>
+                                        <td>{{ player.19 }}</td>
+                                        <td>{{ player.20 }}</td>
+                                        <td>{{ player.21 }}</td>
+                                        <td>{{ player.22 }}</td>
+                                        <td>{{ player.23 }}</td>
+                                        <td>{{ player.25 }}</td>
+                                        <td>{{ player.26 }}</td>
+                                        <td>{{ player.27 }}</td>
+                                    {% else %}
+                                        <td>{{ player.5 }}</td>
+                                        <td colspan="16" class="text-center">{{ player.7 }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td><strong>TOTAL</strong></td>
+                                <td>{{ hometeamstat.5 }}</td>
+                                <td>{{ hometeamstat.6 }}/{{ hometeamstat.7 }}</td>
+                                <td>{{ hometeamstat.8 }}</td>
+                                <td>{{ hometeamstat.9 }}/{{ hometeamstat.10 }}</td>
+                                <td>{{ hometeamstat.11 }}</td>
+                                <td>{{ hometeamstat.12 }}/{{ hometeamstat.13 }}</td>
+                                <td>{{ hometeamstat.14 }}</td>
+                                <td>{{ hometeamstat.15 }}</td>
+                                <td>{{ hometeamstat.16 }}</td>
+                                <td>{{ hometeamstat.17 }}</td>
+                                <td>{{ hometeamstat.18 }}</td>
+                                <td>{{ hometeamstat.19 }}</td>
+                                <td>{{ hometeamstat.20 }}</td>
+                                <td>{{ hometeamstat.22 }}</td>
+                                <td>{{ hometeamstat.23 }}</td>
+                                <td>{{ hometeamstat.24 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+            <div id="visitorstat">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ visitorteamstat.4 }} {{ visitorteamstat.2 }} Player Statics
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>PLAYER</th>
+                            <th>MIN</th>
+                            <th>FGM/FGA</th>
+                            <th>FG_PCT</th>
+                            <th>FG3M/FG3A</th>
+                            <th>FG3_PCT</th>
+                            <th>FTM/FTA</th>
+                            <th>FT_PCT</th>
+                            <th>OREB</th>
+                            <th>DREB</th>
+                            <th>REB</th>
+                            <th>AST</th>
+                            <th>STL</th>
+                            <th>BLK</th>
+                            <th>PF</th>
+                            <th>PTS</th>
+                            <th>+/-</th>
+                        </thead>
+                        <tbody>
+                            {% for player in visitorplayerstat %}
+                                <tr>
+                                    {% if player.7 == '' %}
+                                        <td>{{ player.5 }}</td>
+                                        <td>{{ player.8 }}</td>
+                                        <td>{{ player.9 }}/{{ player.10 }}</td>
+                                        <td>{{ player.11 }}</td>
+                                        <td>{{ player.12 }}/{{ player.13 }}</td>
+                                        <td>{{ player.14 }}</td>
+                                        <td>{{ player.15 }}/{{ player.16 }}</td>
+                                        <td>{{ player.17 }}</td>
+                                        <td>{{ player.18 }}</td>
+                                        <td>{{ player.19 }}</td>
+                                        <td>{{ player.20 }}</td>
+                                        <td>{{ player.21 }}</td>
+                                        <td>{{ player.22 }}</td>
+                                        <td>{{ player.23 }}</td>
+                                        <td>{{ player.25 }}</td>
+                                        <td>{{ player.26 }}</td>
+                                        <td>{{ player.27 }}</td>
+                                    {% else %}
+                                        <td>{{ player.5 }}</td>
+                                        <td colspan="16" class="text-center">{{ player.7 }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td><strong>TOTAL</strong></td>
+                                <td>{{ visitorteamstat.5 }}</td>
+                                <td>{{ visitorteamstat.6 }}/{{ visitorteamstat.7 }}</td>
+                                <td>{{ visitorteamstat.8 }}</td>
+                                <td>{{ visitorteamstat.9 }}/{{ visitorteamstat.10 }}</td>
+                                <td>{{ visitorteamstat.11 }}</td>
+                                <td>{{ visitorteamstat.12 }}/{{ visitorteamstat.13 }}</td>
+                                <td>{{ visitorteamstat.14 }}</td>
+                                <td>{{ visitorteamstat.15 }}</td>
+                                <td>{{ visitorteamstat.16 }}</td>
+                                <td>{{ visitorteamstat.17 }}</td>
+                                <td>{{ visitorteamstat.18 }}</td>
+                                <td>{{ visitorteamstat.19 }}</td>
+                                <td>{{ visitorteamstat.20 }}</td>
+                                <td>{{ visitorteamstat.22 }}</td>
+                                <td>{{ visitorteamstat.23 }}</td>
+                                <td>{{ visitorteamstat.24 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
