@@ -1,6 +1,18 @@
-{% extends 'NBAindex/index.html' %}
+{% extends 'NBAindex/firstpagebase.html' %}
 {% load staticfiles %}
 {% block navabout %}active{% endblock %}
+{% block script%}
+    <style>
+        .bg{background:url(/static/image/indexbg.jpeg) no-repeat center fixed;background-size:contain}
+        .jumbotron{
+            padding: 170px;
+        }
+        .jumbotron h1{
+            color: #ffffff;
+        }
+    </style>
+{% endblock %}
+{% block firstpageheadline %}About{% endblock %}
 {% block index_block %}
 <h1>ABOUT THIS WEBSITE</h1>
     <ul>
@@ -16,7 +28,7 @@
             All the data in this website is comming from stat.NBA.com.
         </li>
     </ul>
-<h1>ABOUT ME</h1>
+<h1 >ABOUT ME</h1>
     <ul>
         <li>Yang Kai</li>
         <li>Email: andyyang0212 at hotmail.com</li>

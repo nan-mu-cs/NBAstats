@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'NBAindex/register/$',views.register,name="register"),
     url(r'NBAindex/login/',views.user_login,name="login"),
     url(r'NBAindex/logout',views.user_logout,name="logout"),
+    url(r'^score/',views.score_index,name="score"),
+    url(r'NBAindex/scoredatesearch',views.score_datesearch,name="score_datesearch"),
 ]
 
 

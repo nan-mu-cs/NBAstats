@@ -51,6 +51,7 @@ class gameid(models.Model):
     day = models.IntegerField()
     hometeamid = models.CharField(max_length=12)
     visitorteamid = models.CharField(max_length=12)
+    season = models.IntegerField()
     def __unicode__(self):
         return self.gameid
     class Meta:

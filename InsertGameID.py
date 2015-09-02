@@ -12,7 +12,7 @@ def InsertGameIDs():
     conn = sqlite3.connect('db.sqlite3')
     cur = conn.cursor()
     gameids = getgameid()
-    para = 'insert into gameid values(?,?,?,?,?,?,?)'
+    para = 'insert into gameid values(?,?,?,?,?,?,?,?)'
     pattern1 = re.compile(r'\d+')
     pattern2 = re.compile(r'(\d+)-(\d+)-(\d+)')
     for i in range(0,len(gameids)):
@@ -21,8 +21,8 @@ def InsertGameIDs():
         year = times[0]
         month = times[1]
         day = times[2]
-        fillset = [date,year,month,day,gameids['HOME_TEAM_ID'][i],
-                gameids['VISITOR_TEAM_ID'][i],gameids['GAME_ID'][i]]
+        fillset = [gameids['GAME_ID'][i],date,year,month,day,gameids['HOME_TEAM_ID'][i],
+                gameids['VISITOR_TEAM_ID'][i], gameids['SEASON'][i]]
         cur.execute(para,fillset)
     conn.commit()
     cur.close()

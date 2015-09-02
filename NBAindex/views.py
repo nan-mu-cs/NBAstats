@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,HttpResponseRedirect
-from NBAindex.models import playerdata,playerprofile
+from NBAindex.models import playerdata,playerprofile,gameid,teamprofile
 from NBAindex.form import UserCreationForm,UserProfileForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -28,7 +28,7 @@ def index(request):
         'range':range(3)
     }
     #return HttpResponse(json.dumps(bychar,sort_keys=True),content_type="application/json")
-    return render(request,'NBAindex/index.html',{})
+    return render(request, 'NBAindex/playerindex.html',{})
 
 def index_initialize(requset):
     bychar = {}
@@ -225,3 +225,51 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def score_index(request):
+    return  render(request,'NBAindex/scoreindex.html',{})
+
+def score_datesearch(request):
+    datestr = request.GET['date']
+    print datestr
+    pattern = re.compile(r'(\d+)-(\d+)-(\d+)')
+    date = re.findall(pattern,datestr)[0]
+    year = date[0]
+    month = date[1]
+    day = date[2]
+    url = 'http://stats.nba.com/stats/boxscoresummaryv2?GameID='
+    resultset = gameid.objects.filter(year=year,month=month,day=day).values("gameid")
+    dateset = []
+    for id in resultset:
+        gameurl = url + id['gameid']
+        response = requests.get(gameurl)
+        summary = response.json()['resultSets'][0]['rowSet'][0]
+        game_id = summary[2]
+        status = summary[4]
+        hometeamid = summary[6]
+        visitorteamid = summary[7]
+        period = summary[9]
+        otherstas = response.json()['resultSets'][1]['rowSet']
+        hometeamname = otherstas[0][2]
+        visitorteamname = otherstas[1][2]
+        linescore = response.json()['resultSets'][5]['rowSet']
+        homeqtr = linescore[0][8:22]
+        visitorqtr = linescore[1][8:22]
+        homepts = linescore[0][22]
+        visitorpts = linescore[0][22]
+        item = {
+            'game_id':game_id,
+            'status':status,
+            'hometeamid':hometeamid,
+            'visitorteamid':visitorteamid,
+            'period':period,
+            'hometeamname':hometeamname,
+            'visitorteamname':visitorteamname,
+            'homeqtr':homeqtr,
+            'visitorqtr':visitorqtr,
+            'homepts':homepts,
+            'visitorpts':visitorpts,
+        }
+        dateset.append(item)
+    return HttpResponse(json.dumps(dateset),content_type="application/json")
+

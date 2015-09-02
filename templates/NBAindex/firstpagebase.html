@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+<div class="container bs-docs-container">
+    <div class="jumbotron bg">
+        <h1>{% block firstpageheadline %}{% endblock %}</h1>
+    </div>
+    {% block index_block %}
+        {% endblock %}
+</div>
+{% endblock %}
