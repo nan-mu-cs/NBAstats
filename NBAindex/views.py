@@ -12,7 +12,10 @@ import datetime
 import re
 import NBAindex.ShootingJsonData as sjd
 
+
 def index(request):
+    return render(request,'index.html',{})
+def player_index(request):
     bychar = {}
     for alp in string.uppercase:
         length = len(playerprofile.objects.filter(display_last_comma_first__startswith=alp))
@@ -30,7 +33,7 @@ def index(request):
     #return HttpResponse(json.dumps(bychar,sort_keys=True),content_type="application/json")
     return render(request, 'NBAindex/playerindex.html',{})
 
-def index_initialize(requset):
+def player_index_initialize(requset):
     bychar = {}
     for alp in string.uppercase:
         resultlist = list(playerprofile.objects.filter(display_last_comma_first__startswith=alp)
@@ -81,7 +84,7 @@ def CountAge(str):
         day = day - daysofbirth
     return age,day
 
-def player_index(request,playerid):
+def playerpage_index(request,playerid):
     result = list(playerdata.objects.filter(playerid=playerid).values("player_img_url","player_info_url",
                                                                       "player_news_url","player_career_stat_url"))
     info_url = result[0]['player_info_url']
@@ -332,14 +335,6 @@ def gameinfo(id):
             'homeqtr':'','visitorqtr':'','homepts':'','visitorpts':'',
         }
     return item
-
-def test(request):
-    return render(request, 'NBAindex/replaypage.html',{})
-
-def testdata(request):
-    dateset = open('event.json')
-    data  = dateset.read()
-    return HttpResponse(data,content_type="application/json")
 
 def replaypage_index(request):
     game_id = request.GET['gameid']

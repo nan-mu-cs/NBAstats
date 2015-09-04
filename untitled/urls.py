@@ -20,9 +20,10 @@ from NBAindex import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$',views.index,name="index"),
-    url(r'NBAindex/index_initialize/',views.index_initialize,name="index_initialize"),
+    url(r'^player/',views.player_index,name='player'),
+    url(r'NBAindex/index_initialize/',views.player_index_initialize,name="player_index_initialize"),
     url(r'NBAindex/index_search/',views.index_search,name="index_search"),
-    url(r'playerpage/(?P<playerid>\d+)/$',views.player_index,name="player_index"),
+    url(r'playerpage/(?P<playerid>\d+)/$',views.playerpage_index,name="playerpage_index"),
     url(r'NBAindex/shootingdiagram/',views.shootingdiagram,name="shootingdiagram"),
     url(r'NBAindex/playergamelog/',views.player_gamelog,name="playergamelog"),
     url(r'^about/',views.aboutme,name="aboutme"),
@@ -32,7 +33,6 @@ urlpatterns = [
     url(r'^score/',views.score_index,name="score"),
     url(r'NBAindex/scoredatesearch',views.score_datesearch,name="score_datesearch"),
     url(r'scorepage/(?P<game_id>\d+)/$',views.scorepage_index,name="scorepage_index"),
-    url(r'test/$',views.test),
     url(r'replaypage/getdata',views.replaypage_getdata),
     url(r'NBAindex/replaypage',views.replaypage_index,name="replaypage_index"),
 ]

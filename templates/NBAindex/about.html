@@ -1,17 +1,7 @@
 {% extends 'NBAindex/firstpagebase.html' %}
 {% load staticfiles %}
 {% block navabout %}active{% endblock %}
-{% block script%}
-    <style>
-        .bg{background:url(/static/image/indexbg.jpeg) no-repeat center fixed;background-size:contain}
-        .jumbotron{
-            padding: 170px;
-        }
-        .jumbotron h1{
-            color: #ffffff;
-        }
-    </style>
-{% endblock %}
+{% block imgurl %}/static/image/indexbg.jpeg{% endblock %}
 {% block firstpageheadline %}About{% endblock %}
 {% block index_block %}
 <h1>ABOUT THIS WEBSITE</h1>

@@ -1,0 +1,30 @@
+{% extends 'NBAindex/firstpagebase.html' %}
+{% load staticfiles %}
+{% block imgurl %}/static/image/indexbg.jpeg{% endblock %}
+{% block navindex %}active{% endblock %}
+{% block firstpageheadline %}NBAstats{% endblock %}
+{% block index_block %}
+<div class="row">
+<div class="col-md-6">
+    <a href="{% url 'player' %}"><h2>PLAYER</h2></a>
+    Search for players, then you will gain the every current players...
+    <ul class="h4 list-unstyled">
+        <li>Basic Profile</li>
+        <li>Career Statics</li>
+        <li>Career Statics Ranking in League</li>
+        <li>Shooting Diagram</li>
+        <li>Recent News</li>
+    </ul>
+</div>
+<div class="col-md-6">
+    <a href="{% url 'score' %}"><h2>SCORE</h2></a>
+    Search by date, you will get every play...
+    <ul class="h4 list-unstyled">
+        <li>Basic Info</li>
+        <li>Players' Performance</li>
+        <li>Text Description using Timeline</li>
+        <li>Animation</li>
+    </ul>
+</div>
+</div>
+{% endblock %}

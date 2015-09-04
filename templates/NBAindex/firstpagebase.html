@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block style %}
+    <style>
+        .bg{background:url({% block imgurl %}{% endblock %}) no-repeat center fixed;background-size:contain}
+        .jumbotron{
+            padding: 170px;
+        }
+        .jumbotron h1{
+            color: #ffffff;
+        }
+    </style>
+{% endblock %}
 {% block body_block %}
 <div class="container bs-docs-container">
     <div class="jumbotron bg">
