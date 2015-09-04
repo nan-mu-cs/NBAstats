@@ -262,17 +262,21 @@ def scorepage_index(request,game_id):
     response = requests.get(eventurl)
     eventset = response.json()['resultSets'][0]['rowSet']
     event = []
+    score = '0-0'
     for item in eventset:
-        if item[7]!='' or item[8] != '':
+        if item[7]!= None or item[9] != None:
+            if item[10] :
+                score = item[10]
             itemdict = {
-                'gameid':item[0],
                 'eventnum':item[1],
                 'period':item[4],
                 'clock':item[6],
+                'score':score,
                 'homedescrip':item[7],
-                'visitordescrip':item[8],
+                'visitordescrip':item[9],
             }
             event.append(itemdict)
+    print event
     context = {
         'homeplayerstat':homeplayerstat,
         'hometeamstat':hometeamstat,
@@ -330,9 +334,23 @@ def gameinfo(id):
     return item
 
 def test(request):
-    return render(request,'test.html',{})
+    return render(request, 'NBAindex/replaypage.html',{})
 
 def testdata(request):
     dateset = open('event.json')
     data  = dateset.read()
     return HttpResponse(data,content_type="application/json")
+
+def replaypage_index(request):
+    game_id = request.GET['gameid']
+    eventnum = request.GET['eventnum']
+    url = 'http://stats.nba.com/stats/locations_getmoments/?eventid=%s&gameid=%s'%(eventnum,game_id)
+    response = requests.get(url)
+    return render(request,'NBAindex/replaypage.html',{'gameid':game_id,'eventnum':eventnum})
+
+def replaypage_getdata(request):
+    game_id = request.GET['gameid']
+    eventnum = request.GET['eventnum']
+    url = 'http://stats.nba.com/stats/locations_getmoments/?eventid=%s&gameid=%s'%(eventnum,game_id)
+    response = requests.get(url)
+    return HttpResponse(json.dumps(response.json()),content_type="application/json")

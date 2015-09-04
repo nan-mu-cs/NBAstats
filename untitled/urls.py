@@ -32,6 +32,9 @@ urlpatterns = [
     url(r'^score/',views.score_index,name="score"),
     url(r'NBAindex/scoredatesearch',views.score_datesearch,name="score_datesearch"),
     url(r'scorepage/(?P<game_id>\d+)/$',views.scorepage_index,name="scorepage_index"),
+    url(r'test/$',views.test),
+    url(r'replaypage/getdata',views.replaypage_getdata),
+    url(r'NBAindex/replaypage',views.replaypage_index,name="replaypage_index"),
 ]
 
 

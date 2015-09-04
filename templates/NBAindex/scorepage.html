@@ -1,9 +1,24 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block script %}
+    <link rel="stylesheet" href="/static/css/timeline.css" media="screen">
+    <script src="/static/js/scorepage.js"></script>
 {% endblock %}
 {% block title %}{{ gameinfo.hometeamname }} - {{ gameinfo.visitorteamname }}{% endblock %}
 {% block body_block %}
+<div class="modal fade bs-example-modal-lg" id="replaymodal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                <h4 class="modal-title" id="replayiframetitle"></h4>
+            </div>
+            <div class="modal-body">
+                <iframe id="replayiframe" width="1000" height="540" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="jumbotron">
         <div class="row">
@@ -222,6 +237,53 @@
                 </div>
             </div>
           </div>
+            <div id="gamereplay">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        GAME REPLAY
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="timeline">
+                        {% for item in event %}
+                            {% if item.homedescrip != None %}
+                                <li>
+                            {% else %}
+                                <li class="timeline-inverted">
+                            {% endif %}
+                             <div class="timeline-badge">
+                             {{ item.score }}
+                             </div>
+                            <div class="timeline-panel">
+                                <div class="timeline-heading">
+                                    <a href="NBAindex/replaypage?gameid={{ gameinfo.game_id }}&eventnum={{ item.eventnum }}">
+                                    <h4 class="timeline-title">
+                                       {% if item.homedescrip != None %}
+                                            {{ item.homedescrip }}
+                                        {% else %}
+                                           {{ item.visitordescrip }}
+                                        {% endif %}
+                                    </h4>
+                                    </a>
+                                    <p><small class="text-muted">
+                                        <i class="glyphicon glyphicon-time"></i>
+                                        {% if item.period > 4 %}
+                                            OT{{ item.period|add:'-4' }}
+                                        {% else %}
+                                            QT{{ item.period }}
+                                        {% endif %}
+                                         {{ item.clock }}</small></p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="navbar-btn btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default up">Up <span class="glyphicon glyphicon-chevron-up"></span></button>
+                        <button type="button" class="btn btn-default down" >More <span class="glyphicon glyphicon-chevron-down"></span></button>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

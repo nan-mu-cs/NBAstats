@@ -77,7 +77,10 @@ function drawcourt(chart) {
         .attr('stroke-width', 3).attr('stroke', 'black');
 
     chart.append('path').attr('d', arc(39, 42, pi / 2, 3 * pi / 2)).attr('transform', 'translate(250,52.5)');
-
+    chart.append('circle').attr('cx',3).attr('cy',480).attr('r',3).attr('fill','red');
+    chart.append('text').attr('x',7).attr('y',485).text('Made Shot');
+    chart.append('circle').attr('cx',105).attr('cy',480).attr('r',3).attr('fill','blue');
+    chart.append('text').attr('x',109).attr('y',485).text('Miss Shot');
 }
 
 function menuChange(targetset){
