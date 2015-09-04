@@ -265,7 +265,7 @@ def scorepage_index(request,game_id):
     response = requests.get(eventurl)
     eventset = response.json()['resultSets'][0]['rowSet']
     event = []
-    score = '0-0'
+    score = '0 - 0'
     for item in eventset:
         if item[7]!= None or item[9] != None:
             if item[10] :
@@ -339,8 +339,6 @@ def gameinfo(id):
 def replaypage_index(request):
     game_id = request.GET['gameid']
     eventnum = request.GET['eventnum']
-    url = 'http://stats.nba.com/stats/locations_getmoments/?eventid=%s&gameid=%s'%(eventnum,game_id)
-    response = requests.get(url)
     return render(request,'NBAindex/replaypage.html',{'gameid':game_id,'eventnum':eventnum})
 
 def replaypage_getdata(request):

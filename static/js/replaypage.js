@@ -23,7 +23,8 @@ function drawCourt(chart,data){
     visitorteamid = data['visitor']['teamid'];
             hometeamid = data['home']['teamid'];
             nextmsec = data['moments'][0][2]*10;
-            startr = data['moments'][0][5][0][4];
+            //startr = data['moments'][0][5][0][4];
+            startr = 5;
             /*clock on the top*/
             timeleft = chart.append('text').attr('x',430).attr('y',15)
                 .text('CLOCK: '+showTime(data['moments'][0][2])).attr('class','playeroncourt');
@@ -40,10 +41,10 @@ function drawCourt(chart,data){
                                  .attr('class','playeroncourt');
                 /*set ball radius and color*/
                 if(data['moments'][0][5][i][0] == -1)
-                    player[i] = player[i].attr('fill','yellow').attr('r',5);
+                    player[i] = player[i].attr('fill','yellow').attr('r',data['moments'][0][5][0][4]/startr*5);
                 /*set home player color, radius and number*/
                 else if(data['moments'][0][5][i][0] == hometeamid) {
-                    player[i] = player[i].attr('fill', 'red').attr('r', 12);
+                    player[i] = player[i].attr('fill', 'red').attr('r', 15);
                     num = $.grep(data['home']['players'],function(item){
                         return item['playerid'] == data['moments'][0][5][i][1]})[0]['jersey'];
                     playernum[i] = chart.append('text').text(num)
@@ -56,7 +57,7 @@ function drawCourt(chart,data){
                 }
                 /*set visitor player color, radius and number*/
                 else{
-                    player[i] = player[i].attr('fill','blue').attr('r',12);
+                    player[i] = player[i].attr('fill','blue').attr('r',15);
                     num = $.grep(data['visitor']['players'],function(item){
                         return item['playerid'] == data['moments'][0][5][i][1]})[0]['jersey'];
                     playernum[i] = chart.append('text').text(num)
@@ -100,6 +101,10 @@ $(document).ready(
         $('.eventnum').hide();
         $.getJSON('replaypage/getdata',{gameid:gameid,eventnum:eventnum},function(data){
             playdata = data;
+            if(data['moments'].length == 0) {
+                $('.court').hide();
+                $('.error').html('<h1>Sorry animation not available</h1>');
+            }
             drawCourt(chart,data);
             drawEvent(data);
         })

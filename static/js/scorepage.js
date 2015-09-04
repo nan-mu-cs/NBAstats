@@ -5,6 +5,7 @@ $(document).ready(
     function(){
         var numofevent = $('#gamereplay ul').children().length
         var numofshownevent = numofevent>5?5:numofevent;
+        /*
         $('#gamereplay ul li:gt(4)').hide();
         $('#gamereplay .up').attr('disable',true);
         if(numofevent<=5)
@@ -28,10 +29,12 @@ $(document).ready(
                 if(numofshownevent>5)
                     $('#gamereplay .up').attr('disable',true);
             }
-        )
+        )*/
         $('#gamereplay li a').click(
             function(){
                 url = $(this).attr('href');
+                $('#replaymodal .loading').show();
+                $('#replayiframe').hide();
                 $("#replayiframe").attr("src", url);
                 title = $(this).text();
                 $('#replayiframetitle').text(title);
@@ -46,6 +49,9 @@ $(document).ready(
 });*/
                 return false;
             }
-        )
+        );
+        $('#replayiframe').load(function(){
+            $('#replaymodal .loading').hide();
+            $(this).show();})
     }
 );
