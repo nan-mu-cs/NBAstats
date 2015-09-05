@@ -1,9 +1,9 @@
 {% extends 'NBAindex/firstpagebase.html' %}
 {% load staticfiles %}
 {% block script%}
-    <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css" media="screen">
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.min.css" media="screen">
     <link rel="stylesheet" href="/static/css/datetimepicker.min.css" media="screen">
-    <script  src="/static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script  src="/static/js/bootstrap-datepicker.min.js" charset="UTF-8"></script>
     <script  src="/static/js/scoreindex.js"></script>
 {% endblock %}
 {% block imgurl %}/static/image/team.jpg{% endblock %}
@@ -13,28 +13,17 @@
 <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-            <a class="navbar-brand">Select Date</a>
+                <span class=" navbar-brand glyphicon glyphicon-search" aria-hidden="true"></span>
+                <a class="navbar-brand">Select Date</a>
         </div>
-
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-          <li>
-              <span class=" navbar-brand glyphicon glyphicon-search" aria-hidden="true"></span>
-          </li>
-          <li>
-              <form class="navbar-form navbar-left form-horizontal" role="form">
-                  <div class="form-group">
-                      <div class="input-group date form_date " data-date=""
+    <form class="navbar-form navbar-left form-horizontal" role="form">
+                    <div class="input-group date form_date " data-date=""
                            data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                           <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                           <input class="form-control" size="16" type="text" value="" readonly
-                      </div>
+                    </div>
                       <input type="hidden" id="dtp_input" value="" /><br/>
-                  </div>
                 </form>
-          </li>
-      </ul>
-    </div>
   </div>
 </nav>
 <div class="row">

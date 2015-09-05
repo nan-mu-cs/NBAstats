@@ -26,13 +26,13 @@ function drawCourt(chart,data){
             //startr = data['moments'][0][5][0][4];
             startr = 5;
             /*clock on the top*/
-            timeleft = chart.append('text').attr('x',430).attr('y',15)
+            timeleft = chart.append('text').attr('x',430).attr('y',20)
                 .text('CLOCK: '+showTime(data['moments'][0][2])).attr('class','playeroncourt');
             /*color rect reperesent two team on the bottom*/
             chart.append('rect').attr('x',420).attr('width',10).attr('y',480).attr('height',10).attr('fill','red');
             chart.append('text').attr('x',440).attr('y',490).text(data['home']['abbreviation']);
-            chart.append('rect').attr('x',475).attr('width',10).attr('y',480).attr('height',10).attr('fill','blue');
-            chart.append('text').attr('x',495).attr('y',490).text(data['visitor']['abbreviation']);
+            chart.append('rect').attr('x',480).attr('width',10).attr('y',480).attr('height',10).attr('fill','blue');
+            chart.append('text').attr('x',500).attr('y',490).text(data['visitor']['abbreviation']);
             /*draw the start postion and player number*/
             for(i = 0;i<data['moments'][0][5].length;i++){
                 /*add player and ball*/
@@ -41,10 +41,10 @@ function drawCourt(chart,data){
                                  .attr('class','playeroncourt');
                 /*set ball radius and color*/
                 if(data['moments'][0][5][i][0] == -1)
-                    player[i] = player[i].attr('fill','yellow').attr('r',data['moments'][0][5][0][4]/startr*5);
+                    player[i] = player[i].attr('fill','yellow').attr('r',data['moments'][0][5][0][4]/startr*7);
                 /*set home player color, radius and number*/
                 else if(data['moments'][0][5][i][0] == hometeamid) {
-                    player[i] = player[i].attr('fill', 'red').attr('r', 15);
+                    player[i] = player[i].attr('fill', 'red').attr('r', 17);
                     num = $.grep(data['home']['players'],function(item){
                         return item['playerid'] == data['moments'][0][5][i][1]})[0]['jersey'];
                     playernum[i] = chart.append('text').text(num)
@@ -57,7 +57,7 @@ function drawCourt(chart,data){
                 }
                 /*set visitor player color, radius and number*/
                 else{
-                    player[i] = player[i].attr('fill','blue').attr('r',15);
+                    player[i] = player[i].attr('fill','blue').attr('r',17);
                     num = $.grep(data['visitor']['players'],function(item){
                         return item['playerid'] == data['moments'][0][5][i][1]})[0]['jersey'];
                     playernum[i] = chart.append('text').text(num)

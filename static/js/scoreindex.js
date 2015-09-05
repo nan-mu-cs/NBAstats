@@ -53,7 +53,7 @@ $(document).ready(
         var datestr = year + '-' + month + '-' + day;
         $('.form_date').attr('data-date',datestr);
         $('.form_date .form-control').attr('value',datestr);
-        $('.form_date').datetimepicker({
+        /*$('.form_date').datepicker({
         //language:  'fr',
         weekStart: 1,
         todayBtn:  'linked',
@@ -63,7 +63,10 @@ $(document).ready(
 		minView: 2,
 		forceParse: 0,
         keyboardNavigation: true,
-    });
+    });*/
+        $('.form_date').datepicker({
+            autoclose:true
+        });
         $('.loading').hide();
         $.get('/NBAindex/scoredatesearch',{date:datestr},
                 function(data){

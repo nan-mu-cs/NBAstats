@@ -279,7 +279,6 @@ def scorepage_index(request,game_id):
                 'visitordescrip':item[9],
             }
             event.append(itemdict)
-    print event
     context = {
         'homeplayerstat':homeplayerstat,
         'hometeamstat':hometeamstat,
@@ -290,7 +289,6 @@ def scorepage_index(request,game_id):
         'visitorteamimg':'http://stats.nba.com/media/img/teams/logos/%s_logo.svg'%game_info['visitorteamname'],
         'event':event,
     }
-    print context
     return render(request,'NBAindex/scorepage.html',context)
 def gameinfo(id):
     url = 'http://stats.nba.com/stats/boxscoresummaryv2?GameID='
