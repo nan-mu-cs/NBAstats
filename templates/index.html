@@ -1,29 +1,69 @@
 {% extends 'NBAindex/firstpagebase.html' %}
 {% load staticfiles %}
+{% block script %}
+    <script src="/static/js/index.js"></script>
+{% endblock %}
 {% block imgurl %}/static/image/indexbg.jpeg{% endblock %}
 {% block navindex %}active{% endblock %}
 {% block firstpageheadline %}NBAstats{% endblock %}
 {% block index_block %}
+<div class="modal fade bs-example-modal-lg" id="imgmodal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                <h4 class="modal-title" id="replayiframetitle"></h4>
+            </div>
+            <div class="modal-body">
+                <img src=""   class="img-responsive" id="imginmodal">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
 <div class="col-md-6">
     <a href="{% url 'player' %}"><h2>PLAYER</h2></a>
+    <img src="/static/image/playerindex.png" class="img-responsive">
     Search for players, then you will gain the every current players...
+    <img src="/static/image/searchplayer.png" class="img-responsive">
     <ul class="h4 list-unstyled">
-        <li>Basic Profile</li>
-        <li>Career Statics</li>
-        <li>Career Statics Ranking in League</li>
-        <li>Shooting Diagram</li>
-        <li>Recent News</li>
+        <li>Basic Profile
+            <img src="/static/image/playerprofile.png" class="img-responsive">
+        </li>
+        <li>Career Statics
+            <img src="/static/image/playerstat.png" class="img-responsive">
+        </li>
+        <li>Career Statics Ranking in League
+            <img src="/static/image/playerranking.png" class="img-responsive">
+        </li>
+        <li>Shooting Diagram
+            <img src="/static/image/shootingdiagram.png" class="img-responsive">
+        </li>
+        <li>Recent News
+            <img src="/static/image/playernews.png" class="img-responsive">
+        </li>
     </ul>
 </div>
 <div class="col-md-6">
     <a href="{% url 'score' %}"><h2>SCORE</h2></a>
-    Search by date, you will get every play...
+    <img src="/static/image/scoreindex.png" class="img-responsive">
+    Search by date, you will get every play of specific day
+    <img src="/static/image/searchdate.png" class="img-responsive">
+    Then click 'view details' you will get more...
+    <img src="/static/image/viewdetail.png" class="img-responsive">
     <ul class="h4 list-unstyled">
-        <li>Basic Info</li>
-        <li>Players' Performance</li>
-        <li>Text Description using Timeline</li>
-        <li>Animation</li>
+        <li>Basic Info
+            <img src="/static/image/basicinfo.png" class="img-responsive">
+        </li>
+        <li>Players' Performance
+            <img src="/static/image/playerperforme.png" class="img-responsive">
+        </li>
+        <li>Text Description using Timeline
+            <img src="/static/image/timelinedescrip.png" class="img-responsive">
+        </li>
+        <li>Replay Animation
+            <img src="/static/image/replayamination.png" class="img-responsive">
+        </li>
     </ul>
 </div>
 </div>
